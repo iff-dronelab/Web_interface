@@ -1,0 +1,35 @@
+﻿<!Doctype html>
+<html class="home">
+    <head>
+        <title> ANKommEn login</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" type="text/css" href="style.css" />    <!--bindet die style.css ein-->
+        <link rel="icon" href="/images/ANKommEn_Bagde.png">
+
+        <script src='https://unpkg.com/mapbox@1.0.0-beta9/dist/mapbox-sdk.min.js'> </script>
+
+        <script src='https://code.jquery.com/jquery-2.2.4.min.js'> </script>
+
+        <script src="js/login.js"></script>  <!--Script für login einbinden-->
+
+        <script src="js/listtest.js"> </script>
+
+        <script src="js/checkbox.js"> </script>
+
+    </head>
+<body>
+    <div class="container">
+        <img src="images/ANKommEn_Bagde.png" />
+        <form>
+            <div class="form-input">
+                <input type="text" name="username" placeholder="Enter Username" id="username" />
+
+            </div>
+            <div class="form-input">
+                <input type="password" name="password" placeholder="Enter password" id="password" />
+            </div>
+            <input type="button" name="submit" value="LOGIN" class="btn-login" onclick="login()" />
+         </form><br />
+</body>
+</html>

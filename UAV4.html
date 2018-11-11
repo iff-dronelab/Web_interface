@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="icon" href="/images/ANKommEn_Bagde.png">
+    <meta charset='utf-8' />
+    <title>ANKommEn UAV 4</title>
+    <meta name='viewport' content="width=device-width, initial-scale=1.0" />
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <script src='https://unpkg.com/mapbox@1.0.0-beta9/dist/mapbox-sdk.min.js'> </script>
+
+
+    <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.js'></script>
+    <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.43.0/mapbox-gl.css' rel='stylesheet' />
+
+</head>
+<body>
+
+<div id='map' class='embedmap'">
+</div>
+
+<pre id='info' class='overlaykoord'>click on map to set</br>markercoordinates</pre>
+
+<div class='map-overlay top'>
+    <div class='map-overlay-inner'>
+        <label> opacity: <span id='slider-value'>100%</span></label>
+        <input id='slider' type='range' min='0' max='100' step='0' value='100' />
+    </div>
+
+</div>
+
+<script>
+    var lng = 0;
+    var lat = 0;
+
+    var long = 0;
+    var lati = 0;
+
+    mapboxgl.accessToken = 'pk.eyJ1IjoiYmFzaG8xMzM3IiwiYSI6ImNqOG9nNWowaTAzNWczM3JzMmlkZTk3YjUifQ.N122SiHsRs9V1aLIsANoEA';
+    var map = new mapboxgl.Map({
+        container: 'map', // container id
+        style: "mapbox://styles/basho1337/cjd08y4tj1bik2sqqjfhh6ce4", // stylesheet location
+        center: [lng, lat], // starting position [longitude, latitude]
+        zoom: 1 // starting zoom
+    });
+    map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+    }));
+    map.addControl(new mapboxgl.FullscreenControl());
+    var slider = document.getElementById('slider');
+    var sliderValue = document.getElementById('slider-value');
+
+    map.on('click', function(e){
+        long = e.lngLat.lng;
+        lati = e.lngLat.lat;
+        document.getElementById('info').innerHTML = "lng= " + long + "</br>" + "lat= " + lati
+    });
+
+    map.loadImage('/images/markericon.png', function(error, image){
+        if (error) throw error;
+        map.addImage('markerr', image);
+    });
+
+
+
+
+
+
+</script>
+
+
+<div id='color'>
+    <div class='color2'>
+        <button class='decider' id='deciderL'> Layers </button>
+    </div>
+    <div class='color3'>
+        <button class='decider' id='deciderPOI'> POI </button>
+    </div>
+    <div class='color2' id='shwall'>
+        <button class='decider' id='showall'> Show all </button>
+    </div>
+    <div class='color3' id='hdall'>
+        <button class='decider' id='hideall'> Hide all</button>
+    </div>
+
+    <div class='color2' id='shwall2'>
+        <button class='decider' id='showalldata'> Show all </button>
+    </div>
+    <div class='color3' id='hdall2'>
+        <button class='decider' id='hidealldata'> Hide all </button>
+    </div>
+</div>
+<div class='color7' id='flytodiv'>
+    <button class='decider' id='flyto'> Go to Data</button>
+</div>
+<div id='navdisplaylayer'>
+    <nav id='layermenu' class='layermenustyle' type='checkbox'> </nav> 
+</div>
+<div id='color6'>
+    <textarea id="Markerbeschreibung" name="marker" type="text" placeholder="1: Click on Map  2: Type Info here  3: Press Save to share POI"></textarea>
+    <button class='decider' id='sharedataset'> Save </button>
+</div>
+<div id='navdisplaymarker'>
+    <nav id='datamenu' class='datamenustyle' type='checkbox'></nav>
+</div>
+
+<script>
+var DecLayer = document.getElementById("deciderL");
+var DecPOI = document.getElementById("deciderPOI");
+var ShwallLayer = document.getElementById("shwall");
+var HdallLayer = document.getElementById("hdall");
+var ShwallMarker = document.getElementById("shwall2");
+var HdallMarker = document.getElementById("hdall2");
+var Flytodiv = document.getElementById("flytodiv");
+var NavdisplayLayer = document.getElementById("navdisplaylayer");
+var POIsave = document.getElementById("color6");
+var NavdisplayMarker = document.getElementById("navdisplaymarker");
+document.getElementById('deciderL').addEventListener('click', function(){
+        if (DecLayer.className === 'decider'){
+        DecLayer.className = 'activedecider';
+        DecPOI.className = 'decider';
+        ShwallLayer.style.display = 'block';
+        HdallLayer.style.display = 'block';
+        Flytodiv.style.display = 'block';
+        NavdisplayLayer.style.display = 'block';
+        ShwallMarker.style.display = 'none';
+        HdallMarker.style.display = 'none';
+        POIsave.style.display = 'none';
+        NavdisplayMarker.style.display = 'none';
+        }
+    });
+document.getElementById('deciderPOI').addEventListener('click', function(){
+    if (DecPOI.className === 'decider'){
+        DecLayer.className = 'decider';
+        DecPOI.className = 'activedecider';
+        ShwallLayer.style.display = 'none';
+        HdallLayer.style.display = 'none';
+        Flytodiv.style.display = 'none';
+        NavdisplayLayer.style.display = 'none';
+        ShwallMarker.style.display = 'block';
+        HdallMarker.style.display = 'block';
+        POIsave.style.display = 'block';
+        NavdisplayMarker.style.display = 'block';
+    }
+});
+</script>
+
+<script>
+    function myFunction(){
+        var test = document.getElementById("color5");
+        var test2 = document.getElementById("color6")
+        if (test.style.display === "none"){
+            test.style.display = "block";
+            test2.style.display = "none";
+        }
+        else{
+            test.style.display = "none";
+            test2.style.display = "block"
+        }
+    }
+</script>
+<script type="text/javascript" src="CONFIG.js">
+</script>
+
+<script> 
+    document.getElementById('flyto').addEventListener('click', function(){
+        var client = new MapboxClient('sk.eyJ1IjoiYmFzaG8xMzM3IiwiYSI6ImNqYTNyeTBzcTk2bDQyd3B5OW9pOWw1MWcifQ.JMiyoVKhE35SMDxyGMNW-w')
+        client.readStyle('cjbgm3j3gc1fu2rqu464siqdu', function(err, style){
+            if (!err) console.log(style);
+                client.listTilesets(function(err, tilesets){
+
+                    for (var k=0; k<tilesets.length;k++){
+                        if (tilesets[k].name === document.getElementById('layermenu').firstChild.innerHTML){
+                            lng = tilesets[k].center[0];
+                            lat = tilesets[k].center[1];
+                            map.flyTo({
+                            center:[
+                            lng,
+                            lat],
+                            zoom: 19
+                            });
+
+                        };
+
+                    };   
+                });
+
+            });
+
+    });
+</script>
+
+<script>
+    document.getElementById('deciderL').addEventListener('click', function(){
+        var LayerNames = [];
+        var LayerIDs = [];
+        var opacid = [];
+        var k = 0;
+        var client = new MapboxClient('sk.eyJ1IjoiYmFzaG8xMzM3IiwiYSI6ImNqOHlpMmJwaTIyMDAycWs4b2h4bm1jNmcifQ.J0dig_czxKXENWOVg918Lw');
+
+
+
+
+        client.listTilesets(function(err, tilesets){
+            for (var i=0; i<tilesets.length;i++){
+                if (tilesets[i].name.search(CONFIG.UAV4.Name) !== (-1)){   //Nach Drohnenname suchen ?!
+                LayerNames[k]=tilesets[i].name;
+                LayerIDs[k]=tilesets[i].id;
+                k += 1;
+            };
+            };
+
+
+            var layers = document.getElementById('layermenu');
+
+            layers.innerHTML ='';
+
+
+            for (var j=0; j < LayerIDs.length; j++){
+            var id = LayerNames[j];
+            var tlstid = LayerIDs[j];
+
+
+
+            var link = document.createElement('a');            
+            link.href = '#';
+            if (map.getSource(id) === undefined || map.getLayoutProperty(id,'visibility') === 'none' ){
+                link.className = '';
+            }
+            else{
+                link.className = 'active';
+            }
+            link.textContent = id;
+            link.tilesetid = tlstid;
+            layers.appendChild(link);
+
+            var label = document.createElement('label');
+            label.setAttribute('for', id);
+            label.textContent = id;
+
+            if (map.getSource(id) !== undefined){
+                opacid.push(id);
+            }
+            
+            
+
+            slider.addEventListener('input', function(e){
+
+                for (var s=0; s< opacid.length; s++){
+                map.setPaintProperty(opacid[s],'raster-opacity', parseInt(e.target.value,10)/100);
+                sliderValue.textContent = e.target.value + '%';
+                };
+                });
+
+
+
+
+            link.onclick = function(event){
+                var clickedLayer = this.textContent;
+                var clickedtileset = this.tilesetid;
+                event.preventDefault();
+                event.stopPropagation();
+
+                if (map.getSource(clickedLayer) === undefined){    
+                    map.addSource(clickedLayer, {
+                    type: 'raster',
+                    url: 'mapbox://'+clickedtileset
+                    });
+                    map.addLayer({
+                        'id': clickedLayer,
+                        'type': 'raster',
+                        'source': clickedLayer,
+                        'layout': {
+                            'visibility': 'visible'
+                    },
+
+                });
+                    this.className = 'active';
+                    opacid.push(clickedLayer);
+                }
+                   else{
+                        var visibility = map.getLayoutProperty(clickedLayer, 'visibility');
+
+                        if (visibility === 'visible') {
+                            map.setLayoutProperty(clickedLayer, 'visibility', 'none');
+                            this.className = '';
+
+                }       else{
+                            this.className = 'active';
+                            map.setLayoutProperty(clickedLayer,'visibility', 'visible');
+
+                }
+                    } 
+                
+
+            };
+            showall.onclick = function(event){                
+                for(var i=0; i < LayerNames.length; i++){
+                   if (map.getSource(LayerNames[i]) === undefined){
+                    map.addSource(LayerNames[i],{
+                        type: 'raster',
+                        url: 'mapbox://'+LayerIDs[i]
+                    });
+                    map.addLayer({
+                        'id': LayerNames[i],
+                        'type': 'raster',
+                        'source': LayerNames[i],
+                        'layout':{
+                            'visibility': 'visible'
+                        },
+                    });
+                    layers.childNodes[i].className = 'active';
+                    opacid.push(LayerNames[i])
+
+                   }
+                   else{
+                    var visibility = map.getLayoutProperty(LayerNames[i], 'visibility');
+
+                    if (visibility !== 'visible'){
+                        layers.childNodes[i].className = 'active';
+                        map.setLayoutProperty(LayerNames[i], 'visibility', 'visible');
+                    }
+
+                   }                   
+
+                };
+                
+            };
+            hideall.onclick = function(event){
+                for(var i=0; i < LayerNames.length; i++){
+                   if (map.getSource(LayerNames[i]) === undefined){
+                    map.addSource(LayerNames[i],{
+                        type: 'raster',
+                        url: 'mapbox://'+LayerIDs[i]
+                    });
+                    map.addLayer({
+                        'id': LayerNames[i],
+                        'type': 'raster',
+                        'source': LayerNames[i],
+                        'layout':{
+                            'visibility': 'none'
+                        },
+                    });
+                    layers.childNodes[i].className = '';
+                    opacid.push(LayerNames[i])
+
+                   }
+                   else{
+                    var visibility = map.getLayoutProperty(LayerNames[i], 'visibility');
+
+                    if (visibility === 'visible'){
+                        layers.childNodes[i].className = '';
+                        map.setLayoutProperty(LayerNames[i], 'visibility', 'none');
+                    }
+
+                   }                   
+
+                };
+                
+            };                
+            
+        };
+    });
+});
+</script>
+
+<script>
+document.getElementById('sharedataset').addEventListener('click', function(){
+    if (long === 0 && lati === 0){
+        alert("No coordinates set! Choose a point of interest by clicking on the map!")
+    }
+    else{
+            var dt = new Date();
+            var hours = dt.getHours();
+            var minutes = dt.getMinutes();
+            var seconds = dt.getSeconds();
+            var timestamp = hours + ":" + minutes + ":" + seconds;
+        
+            var beschreibung = document.getElementById('Markerbeschreibung').value;
+            var feature = {
+                "type": "Feature",
+                "properties": {
+                    "Beschreibung": beschreibung
+                },
+                "geometry": {
+                    "type": "Point",
+                    "coordinates": [long, lati]
+                }
+            };
+            var client = new MapboxClient('sk.eyJ1IjoiYmFzaG8xMzM3IiwiYSI6ImNqOHlpMmJwaTIyMDAycWs4b2h4bm1jNmcifQ.J0dig_czxKXENWOVg918Lw');
+            client.createDataset({ name: CONFIG.UAV4.POIName + ' '+ timestamp, description: 'Testuser'}, function(err, dataset){
+                client.insertFeature(feature, dataset.id, function(err, feature){
+                    client.listDatasets(function(err, datasets){
+                        document.getElementById('Markerbeschreibung').value = "";
+                        long = 0;
+                        lati = 0;
+                        document.getElementById('info').innerHTML = "lng= " + long + "</br>" + "lat= " + lati
+                        alert("Your marker has been shared!");
+                    });
+
+                });
+
+            });
+        };
+    });
+
+
+</script>
+
+<script>
+
+</script>
+
+<script>
+    document.getElementById('deciderPOI').addEventListener('click',function(){
+        var Datanames = [];
+        var DataIDs = [];
+        var k = 0;
+        var client = new MapboxClient('sk.eyJ1IjoiYmFzaG8xMzM3IiwiYSI6ImNqOHlpMmJwaTIyMDAycWs4b2h4bm1jNmcifQ.J0dig_czxKXENWOVg918Lw');
+
+
+
+        var popup = new mapboxgl.Popup({
+            closeButton:false,
+            closeOnClick: false
+        });
+
+
+
+        client.listDatasets(function(err, datasets){
+            for (var i=0; i<datasets.length;i++){
+                if (datasets[i].name.search(CONFIG.UAV4.POIName) !== (-1) && datasets[i].features !== 0){   //Nach Drohne suchen ?!
+                Datanames[k]=datasets[i].name;
+                DataIDs[k]=datasets[i].id;
+                k += 1;                
+            };
+            };
+
+            var markers = document.getElementById('datamenu');
+            markers.innerHTML = '';
+
+            for (var j=0; j < DataIDs.length; j++){
+            var id2 = Datanames[j];
+            var dtid = DataIDs[j];
+            var link2 = document.createElement('b');
+            link2.href = '#';
+            link2.textContent = id2;
+            link2.datasetid = dtid;
+            if (map.getSource(id2) === undefined ){
+                link2.className = '';
+            }
+            else{
+                link2.className = 'active';
+            }
+            markers.appendChild(link2);
+
+            link2.onclick = function(event){
+
+                var clickedmarkername = this.textContent;
+                var clickedmarker = this.datasetid;
+                event.preventDefault();
+                event.stopPropagation();
+                if (map.getLayer(clickedmarkername) === undefined){
+                    this.className = "active";
+                }
+                else{
+                    this.className = "";
+                }
+
+                client.listFeatures(clickedmarker, function(err, collection){
+                    clickedfeatureid = collection.features[0].id;
+                    client.readFeature(clickedfeatureid, clickedmarker, function(err, feature){
+                        console.log(clickedmarker);
+                        console.log(clickedfeatureid);
+                        var markerbeschreibung = feature.properties.Beschreibung;
+                        var markerlng = feature.geometry.coordinates[0];
+                        var markerlat = feature.geometry.coordinates[1];
+
+
+                        if (map.getLayer(clickedmarkername) === undefined){
+
+                            map.addLayer({
+                                "id": clickedmarkername,
+                                "type": "symbol",
+                                "source":{
+                                    "type": "geojson",
+                                    "data": {
+                                        "type": "FeatureCollection",
+                                        "features": [{
+                                            "type": "Feature",
+                                            "properties":{
+                                                "marker-color": '#3bb2d0',
+                                                "marker-size": 'large',
+                                                "description": markerbeschreibung //,
+                                                //"icon": "marker"
+
+                                            },
+                                            "geometry":{
+                                                "type": "Point",
+                                                "coordinates": [markerlng, markerlat]
+                                            },
+                                        }]
+                                    },
+                                },
+                                "layout":{
+                                "icon-image": "markerr",
+                                "icon-allow-overlap": true,
+                                "icon-size": 0.035
+                                }
+                            });
+
+                        
+                        map.on('mouseenter', clickedmarkername, function(e){
+                            map.getCanvas().style.cursor = 'pointer';
+
+                            popup.setLngLat(e.features[0].geometry.coordinates)
+                            popup.setHTML(e.features[0].properties.description)
+                            popup.addTo(map);
+                        });
+
+
+
+                        map.on('mouseleave', clickedmarkername, function(){
+                            map.getCanvas().style.cursor = '';
+                            popup.remove();
+                        });
+                       
+                     }
+
+                        else{
+                            map.removeLayer(clickedmarkername);
+                            map.removeSource(clickedmarkername);
+                        
+                        }
+
+
+
+                        });
+                    });
+                //});
+
+                
+
+            };
+
+            hidealldata.onclick = function(event){
+                for(i=0; i<Datanames.length; i++){
+                    if(map.getLayer(Datanames[i]) !== undefined){
+                        map.removeLayer(Datanames[i]);
+                        map.removeSource(Datanames[i]);
+                        markers.childNodes[i].className = '';
+                    }
+                }
+
+            }
+
+            showalldata.onclick = function(event){
+                var ftrid = [];
+                var beschr = [];
+                var mrklng = [];
+                var mrklat = [];
+                var interval = 0;
+                var interval2 = 0;
+                var interval3 = 0;
+                setInterval(function(){
+                    if (interval < DataIDs.length){
+                        client.listFeatures(DataIDs[interval], function(err, collection){
+                            ftrid.push(collection.features[0].id);
+                            interval +=1;
+                            console.log(ftrid);
+                        });
+                    }
+                    else{
+                        clearInterval();
+                    }
+                }, 200);
+                setInterval(function(){
+                    if (interval2 < DataIDs.length){
+                        client.readFeature(ftrid[interval2], DataIDs[interval2], function(err, feature){
+                            beschr.push(feature.properties.Beschreibung);
+                            mrklng.push(feature.geometry.coordinates[0]);
+                            mrklat.push(feature.geometry.coordinates[1]);
+                            interval2 +=1;
+                            console.log(beschr);
+                        });
+                    }
+                }, 300);
+                setInterval(function(){
+                    if (interval3 < DataIDs.length){
+                        if(map.getLayer(Datanames[interval3]) === undefined){
+                            map.addLayer({
+                                "id": Datanames[interval3],
+                                "type": "symbol",
+                                "source":{
+                                    "type": "geojson",
+                                    "data": {
+                                        "type": "FeatureCollection",
+                                        "features": [{
+                                            "type": "Feature",
+                                            "properties": {
+                                                "marker-color": '#3bb2d0',
+                                                "marker-size": 'large',
+                                                "description": beschr[interval3]
+                                            },
+                                            "geometry":{
+                                                "type": "Point",
+                                                "coordinates": [mrklng[interval3], mrklat[interval3]]
+                                            },
+                                        }]
+                                    },
+                                },
+                                "layout":{
+                                    "icon-image": "markerr",
+                                    "icon-allow-overlap": true,
+                                    "icon-size": 0.035
+                                }
+                            });
+
+                            map.on('mouseenter', Datanames[interval3], function(e){
+                                map.getCanvas().style.cursor = 'pointer';
+
+                                popup.setLngLat(e.features[0].geometry.coordinates)
+                                popup.setHTML(e.features[0].properties.description)
+                                popup.addTo(map);
+                            });
+
+                            map.on('mouseleave', Datanames[interval3], function(){
+                                map.getCanvas().style.cursor = '';
+                                popup.remove();
+                            });
+                            console.log(interval3);
+                            markers.childNodes[interval3].className = 'active';
+                            interval3 += 1;
+
+                        }
+                        else{
+                            interval3 += 1;
+                        }
+                    }
+                    else{
+                        clearInterval();
+                    }
+
+                }, 400);
+            }
+
+        };
+
+
+    });
+
+});
+</script>
+
+
+</body>
+</html>
