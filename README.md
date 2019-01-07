@@ -4,6 +4,11 @@ It is currently in alpha state, so don't expect a polished and bugfree applicati
 
 Feel free to fork and contribute.
 
+# Preview
+<p align="center">
+  <img  src="https://github.com/msteinbo1337/Studienarbeit---Webseite/blob/master/images/layersinterfacetest.png?raw=true">
+</p>
+
 # Introduction
 This web-application can be used to visualize custom georeferenced images which were uploaded to Mapbox. 
 It is an HTML and Javascript based website running with node.js.
@@ -73,5 +78,7 @@ Note:  The login is a dummy with hardcoded logindata without any further encodin
 
 On the forwarded page you can select specific datasets (filtered by name) for the following webinterface.
 This Datasets can be configured in the **CONFIG.js** json-file from this repository.
+
+In addition, you need to change the accesstoken in the UAV1-4.html files to one of yours. (get it from your accountinfo)
 
 **Step 6:** Enjoy testing the features
